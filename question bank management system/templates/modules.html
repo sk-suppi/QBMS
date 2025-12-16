@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-xl font-semibold text-slate-800 mb-2">
+  Modules / Units – {{ subject.code }} - {{ subject.name }}
+</h2>
+
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+  <!-- Add Module -->
+  <div class="bg-white rounded shadow p-4">
+    <h3 class="text-sm font-semibold mb-3 text-slate-700">Add Module / Unit</h3>
+    <form method="post" class="space-y-3">
+      <input type="hidden" name="action" value="add">
+      <div>
+        <label class="block text-xs mb-1">Module / Unit No.</label>
+        <input type="number" name="module_no" required
+               class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label class="block text-xs mb-1">Title</label>
+        <input type="text" name="title" required
+               class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+      </div>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-blue-700">
+        Save
+      </button>
+    </form>
+  </div>
+
+  <!-- List Modules -->
+  <div class="bg-white rounded shadow p-4">
+    <h3 class="text-sm font-semibold mb-3 text-slate-700">Module List</h3>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-slate-100 text-slate-700">
+            <th class="px-3 py-2 text-left">No.</th>
+            <th class="px-3 py-2 text-left">Title</th>
+            <th class="px-3 py-2 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in modules %}
+          <tr class="border-b last:border-0">
+            <td class="px-3 py-2">{{ m.module_no }}</td>
+            <td class="px-3 py-2">{{ m.title }}</td>
+            <td class="px-3 py-2 text-center space-x-1">
+              <a href="{{ url_for('topics', module_id=m.id) }}"
+                 class="inline-block text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                Topics
+              </a>
+
+              <!-- Quick Edit -->
+              <form method="post" class="inline-block">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="module_id" value="{{ m.id }}">
+                <input type="hidden" name="module_no" value="{{ m.module_no }}">
+                <input type="hidden" name="title" value="{{ m.title }}">
+                <button
+                  onclick="return confirm('Quick edit (update number/title in form or DB as needed).')"
+                  class="text-xs bg-amber-500 text-white px-2 py-1 rounded hover:bg-amber-600">
+                  Quick Edit
+                </button>
+              </form>
+
+              <!-- Delete -->
+              <form method="post" class="inline-block"
+                    onsubmit="return confirm('Delete module? Ensure no topics or questions depend on it.');">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="module_id" value="{{ m.id }}">
+                <button class="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="3" class="px-3 py-4 text-center text-slate-500">
+              No modules added.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

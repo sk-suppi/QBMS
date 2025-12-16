@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-xl font-semibold text-slate-800 mb-4">
+    {{ topic.subject_code }} - {{ topic.subject_name }} / Module {{ topic.module_no }}: {{ topic.module_title }} / Topic: {{ topic.name }}
+</h2>
+
+<div class="bg-white rounded shadow p-5 mb-6">
+    <h3 class="text-base font-semibold text-slate-700 mb-3">Add Question</h3>
+
+    <form method="POST" class="grid md:grid-cols-2 gap-4">
+        <input type="hidden" name="action" value="add">
+
+        <div class="md:col-span-2">
+            <label class="text-sm block mb-1">Question Text</label>
+            <textarea name="question_text" required rows="3"
+                      class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <div>
+            <label class="text-sm block mb-1">Marks</label>
+            <input type="number" name="marks" value="2" min="1"
+                   class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+            <label class="text-sm block mb-1">Difficulty</label>
+            <select name="difficulty"
+                    class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="text-sm block mb-1">Cognitive Level</label>
+            <select name="cognitive_level"
+                    class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+                <option>Remember</option>
+                <option>Understand</option>
+                <option>Apply</option>
+                <option>Analyze</option>
+                <option>Evaluate</option>
+                <option>Create</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="text-sm block mb-1">CO</label>
+            <input type="text" name="co" placeholder="Ex: CO1"
+                   class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+            <label class="text-sm block mb-1">PO</label>
+            <input type="text" name="po" placeholder="Ex: PO1"
+                   class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div class="md:col-span-2">
+            <button
+                class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-blue-700 transition">
+                Add Question
+            </button>
+        </div>
+    </form>
+</div>
+
+<hr class="my-6">
+
+<h3 class="text-base font-semibold text-slate-700 mb-3">Questions List</h3>
+
+<div class="overflow-x-auto bg-white rounded shadow">
+    <table class="min-w-full text-sm">
+        <thead class="bg-slate-100">
+            <tr class="text-left text-slate-700">
+                <th class="px-3 py-2">Question</th>
+                <th class="px-3 py-2">Marks</th>
+                <th class="px-3 py-2">Difficulty</th>
+                <th class="px-3 py-2">Cognitive</th>
+                <th class="px-3 py-2">CO</th>
+                <th class="px-3 py-2">PO</th>
+                <th class="px-3 py-2">Added By</th>
+                <th class="px-3 py-2 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for q in questions %}
+            <tr class="border-b">
+                <td class="px-3 py-2 w-[380px]">{{ q.question_text }}</td>
+                <td class="px-3 py-2 text-center">{{ q.marks }}</td>
+                <td class="px-3 py-2">{{ q.difficulty }}</td>
+                <td class="px-3 py-2">{{ q.cognitive_level }}</td>
+                <td class="px-3 py-2">{{ q.co }}</td>
+                <td class="px-3 py-2">{{ q.po }}</td>
+                <td class="px-3 py-2">{{ q.author }}</td>
+                <td class="px-3 py-2 text-center">
+
+                    <a href="{{ url_for('edit_question', question_id=q.id) }}"
+                       class="text-blue-600 hover:underline mr-2">Edit</a>
+
+                    <form method="post" class="inline">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="question_id" value="{{ q.id }}">
+                        <button onclick="return confirm('Delete this question?')"
+                                class="text-red-600 hover:underline">
+                            Delete
+                        </button>
+                    </form>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8" class="text-center text-slate-500 py-4">
+                    No questions added yet.
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-xl font-semibold text-slate-800 mb-4">Generate Question Paper (PDF)</h2>
+
+<div class="bg-white rounded shadow p-4 max-w-3xl">
+  <form method="post" class="grid md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-xs mb-1">Subject</label>
+      <select name="subject_id"
+              class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" required>
+        {% for s in subjects %}
+        <option value="{{ s.id }}">{{ s.code }} - {{ s.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label class="block text-xs mb-1">Exam Type</label>
+      <select name="exam_type"
+              class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+        <option>Internal</option>
+        <option>External</option>
+        <option>Mid Exam</option>
+        <option>Final Exam</option>
+      </select>
+    </div>
+
+    <div class="md:col-span-2 mt-2">
+      <h3 class="text-sm font-semibold text-slate-700 mb-2">
+        Number of Questions by Difficulty
+      </h3>
+      <div class="grid md:grid-cols-3 gap-3">
+        <div>
+          <label class="block text-xs mb-1">Easy</label>
+          <input type="number" name="easy_q" value="2" min="0"
+                 class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs mb-1">Medium</label>
+          <input type="number" name="med_q" value="3" min="0"
+                 class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+        </div>
+        <div>
+          <label class="block text-xs mb-1">Hard</label>
+          <input type="number" name="hard_q" value="1" min="0"
+                 class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+        </div>
+      </div>
+    </div>
+
+    <div class="md:col-span-2 mt-3">
+      <button class="bg-emerald-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-emerald-700">
+        Generate PDF
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

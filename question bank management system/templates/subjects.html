@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-xl font-semibold text-slate-800 mb-4">Subjects (Admin)</h2>
+
+<div class="grid md:grid-cols-2 gap-4">
+  <!-- Add Subject -->
+  <div class="bg-white rounded shadow p-4">
+    <h3 class="text-sm font-semibold mb-3 text-slate-700">Add Subject</h3>
+    <form method="post" class="space-y-3">
+      <input type="hidden" name="action" value="add">
+      <div>
+        <label class="block text-xs mb-1">Subject Code</label>
+        <input type="text" name="code" required
+               class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label class="block text-xs mb-1">Subject Name</label>
+        <input type="text" name="name" required
+               class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-blue-700">
+        Save
+      </button>
+    </form>
+  </div>
+
+  <!-- List Subjects -->
+  <div class="bg-white rounded shadow p-4">
+    <h3 class="text-sm font-semibold mb-3 text-slate-700">Subject List</h3>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-slate-100 text-slate-700">
+            <th class="px-3 py-2 text-left">Code</th>
+            <th class="px-3 py-2 text-left">Name</th>
+            <th class="px-3 py-2 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in subjects %}
+          <tr class="border-b last:border-0">
+            <td class="px-3 py-2">{{ s.code }}</td>
+            <td class="px-3 py-2">{{ s.name }}</td>
+            <td class="px-3 py-2 text-center space-x-1">
+              <a href="{{ url_for('modules', subject_id=s.id) }}"
+                 class="inline-block text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                Modules
+              </a>
+
+              <!-- Edit -->
+              <form method="post" class="inline-block">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="subject_id" value="{{ s.id }}">
+                <input type="hidden" name="code" value="{{ s.code }}">
+                <input type="hidden" name="name" value="{{ s.name }}">
+                <button
+                  onclick="return confirm('Edit subject? Change code/name in code and re-run if needed.')"
+                  class="text-xs bg-amber-500 text-white px-2 py-1 rounded hover:bg-amber-600">
+                  Quick Edit
+                </button>
+              </form>
+
+              <!-- Delete -->
+              <form method="post" class="inline-block"
+                    onsubmit="return confirm('Delete subject? (Ensure no modules or questions depend on it)');">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="subject_id" value="{{ s.id }}">
+                <button class="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="3" class="px-3 py-4 text-center text-slate-500">
+              No subjects added.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question Bank Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 min-h-screen">
+
+<nav class="bg-blue-700 text-white shadow-md">
+
+    <!-- TOP: Department / University Header -->
+    <div class="w-full bg-blue-800 text-center py-1">
+        <p class="text-sm font-semibold tracking-wider">
+            DEPARTMENT OF COMPUTER APPLICATIONS – VIGNAN'S UNIVERSITY
+        </p>
+    </div>
+
+    <!-- BOTTOM: Application Title, Logo & Menu -->
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+
+        <!-- Left: Logo + System Title -->
+        <div class="flex items-center gap-3">
+            <img src="{{ url_for('static', filename='university_logo.png') }}"
+                 class="h-10 w-10 rounded-full shadow" alt="Logo">
+            <div class="leading-tight">
+                <p class="text-sm font-semibold tracking-wide">QUESTION BANK</p>
+                <p class="text-xs text-blue-100 -mt-1 tracking-wide">MANAGEMENT SYSTEM</p>
+            </div>
+        </div>
+
+        <!-- Center Navigation -->
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+            <a href="{{ url_for('index') }}" class="hover:underline">Home</a>
+            <a href="{{ url_for('subjects') }}" class="hover:underline">Subjects</a>
+            <a href="{{ url_for('search') }}" class="hover:underline">Search</a>
+            <a href="{{ url_for('generate_paper') }}" class="hover:underline">Generate Paper</a>
+
+            {% if session.get('role') == 'admin' %}
+            <a href="{{ url_for('analytics') }}" class="hover:underline">Analytics</a>
+            <a href="{{ url_for('import_excel') }}" class="hover:underline">Import Excel</a>
+            <a href="{{ url_for('logs') }}" class="hover:underline">Logs</a>
+            <a href="{{ url_for('create_user') }}" class="hover:underline">Users</a>
+            {% endif %}
+        </div>
+
+        <!-- Right: Username + Logout -->
+        <div class="flex items-center gap-3">
+            {% if session.get('user_id') %}
+               
+                <a href="{{ url_for('logout') }}"
+                   class="bg-white text-blue-700 px-3 py-1 rounded text-sm font-semibold hover:bg-slate-100 transition">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{{ url_for('login') }}"
+                   class="bg-white text-blue-700 px-3 py-1 rounded text-sm font-semibold hover:bg-slate-100 transition">
+                    Login
+                </a>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+
+
+<!-- FLASH MESSAGES -->
+<div class="max-w-6xl mx-auto mt-4 px-3">
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="space-y-2 mb-4">
+                {% for category, message in messages %}
+                    {% if category == 'success' %}
+                        <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-2 rounded text-sm">
+                            {{ message }}
+                        </div>
+                    {% elif category == 'error' %}
+                        <div class="bg-red-100 border border-red-300 text-red-800 px-4 py-2 rounded text-sm">
+                            {{ message }}
+                        </div>
+                    {% else %}
+                        <div class="bg-slate-100 border border-slate-300 text-slate-800 px-4 py-2 rounded text-sm">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+
+
+<!-- MAIN CONTENT -->
+<div class="max-w-6xl mx-auto px-3 md:px-0 pb-10">
+    {% block content %}{% endblock %}
+</div>
+<!-- FOOTER -->
+<footer class="bg-blue-800 text-blue-100 mt-10">
+    <div class="max-w-7xl mx-auto px-4 py-6 grid md:grid-cols-3 gap-6 text-sm">
+
+        <div>
+            <h3 class="font-semibold text-white mb-2">Question Bank Management System</h3>
+            <p class="leading-relaxed">
+               DONE BY 251FD01012,251FD01035,251FD01040,251FD01071.
+            </p>
+        </div>
+<br>
+        <div class="bg-blue-900 text-center py-2 text-xs">
+        © {{ now().year if now else "" }} Question Bank Management System — All Rights Reserved.
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-xl font-semibold text-slate-800 mb-4">Import Questions from Excel</h2>
+
+<div class="bg-white rounded shadow p-4 max-w-xl">
+  <p class="text-sm text-slate-600 mb-3">
+    Upload an <span class="font-semibold">.xlsx</span> file containing questions.
+    Make sure the columns are:
+    <code class="bg-slate-100 px-1 rounded text-xs">
+      question_text, marks, difficulty, cognitive_level, co, po
+    </code>
+  </p>
+
+  <form method="POST" enctype="multipart/form-data" class="space-y-4">
+    <div>
+      <label class="block text-sm mb-1">Select Excel file (.xlsx)</label>
+      <input type="file" name="file" accept=".xlsx"
+             required
+             class="block w-full text-sm text-slate-700">
+    </div>
+    <button
+      class="bg-emerald-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-emerald-700">
+      Upload & Import
+    </button>
+  </form>
+</div>
+
+{% endblock %}

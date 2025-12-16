@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-xl font-semibold text-slate-800 mb-2">
+  Edit Question – {{ question.subject_code }} {{ question.subject_name }},
+  Module {{ question.module_no }}: {{ question.module_title }},
+  Topic: {{ question.topic_name }}
+</h2>
+
+<div class="bg-white rounded shadow p-4 max-w-2xl">
+  <form method="post" class="space-y-3">
+    <div>
+      <label class="block text-xs mb-1">Question Text</label>
+      <textarea name="question_text" rows="4" required
+                class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">{{ question.question_text }}</textarea>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div>
+        <label class="block text-xs mb-1">Marks</label>
+        <input type="number" name="marks" value="{{ question.marks }}" min="1"
+               class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+      </div>
+      <div>
+        <label class="block text-xs mb-1">Difficulty</label>
+        <select name="difficulty"
+                class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+          <option {% if question.difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+          <option {% if question.difficulty == 'Medium' %}selected{% endif %}>Medium</option>
+          <option {% if question.difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs mb-1">Cognitive Level</label>
+        <select name="cognitive_level"
+                class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+          {% for level in ['Remember','Understand','Apply','Analyze','Evaluate','Create'] %}
+          <option value="{{ level }}" {% if question.cognitive_level == level %}selected{% endif %}>
+            {{ level }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label class="block text-xs mb-1">CO</label>
+        <input type="text" name="co" value="{{ question.co or '' }}"
+               class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+      </div>
+      <div>
+        <label class="block text-xs mb-1">PO</label>
+        <input type="text" name="po" value="{{ question.po or '' }}"
+               class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+      </div>
+    </div>
+    <div class="flex gap-3 mt-2">
+      <button class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-blue-700">
+        Update
+      </button>
+      <a href="{{ url_for('questions', topic_id=question.topic_id) }}"
+         class="text-sm text-slate-600 hover:underline mt-2">
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

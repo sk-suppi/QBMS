@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-xl font-semibold text-slate-800 mb-1">
+  Topics – {{ module.subject_code }} {{ module.subject_name }},
+  Module {{ module.module_no }}: {{ module.title }}
+</h2>
+
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+  <!-- Add Topic -->
+  <div class="bg-white rounded shadow p-4">
+    <h3 class="text-sm font-semibold mb-3 text-slate-700">Add Topic</h3>
+    <form method="post" class="space-y-3">
+      <input type="hidden" name="action" value="add">
+      <div>
+        <label class="block text-xs mb-1">Topic Name</label>
+        <input type="text" name="name" required
+               class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+      </div>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-blue-700">
+        Save
+      </button>
+    </form>
+  </div>
+
+  <!-- List Topics -->
+  <div class="bg-white rounded shadow p-4">
+    <h3 class="text-sm font-semibold mb-3 text-slate-700">Topic List</h3>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="bg-slate-100 text-slate-700">
+            <th class="px-3 py-2 text-left">Topic</th>
+            <th class="px-3 py-2 text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in topics %}
+          <tr class="border-b last:border-0">
+            <td class="px-3 py-2">{{ t.name }}</td>
+            <td class="px-3 py-2 text-center space-x-1">
+              <a href="{{ url_for('questions', topic_id=t.id) }}"
+                 class="inline-block text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
+                Questions
+                
+              </a>
+              <!-- Quick Edit -->
+              <form method="post" class="inline-block">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="topic_id" value="{{ t.id }}">
+                <input type="hidden" name="name" value="{{ t.name }}">
+                <button
+                  onclick="return confirm('Quick edit topic name in DB if required.')"
+                  class="text-xs bg-amber-500 text-white px-2 py-1 rounded hover:bg-amber-600">
+                  Quick Edit
+                </button>
+              </form>
+              <!-- Delete -->
+              <form method="post" class="inline-block"
+                    onsubmit="return confirm('Delete topic? Ensure no questions depend on it.');">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="topic_id" value="{{ t.id }}">
+                <button class="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
+                  Delete
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="2" class="px-3 py-4 text-center text-slate-500">
+              No topics added.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

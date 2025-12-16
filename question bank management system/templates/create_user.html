@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-xl font-semibold text-slate-800 mb-4">Create User (Admin only)</h2>
+
+<div class="bg-white rounded shadow p-4 max-w-lg">
+  <form method="post" class="space-y-4">
+    <div>
+      <label class="block text-sm mb-1">Username</label>
+      <input type="text" name="username" required
+             class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div>
+      <label class="block text-sm mb-1">Password</label>
+      <input type="text" name="password" required
+             class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div>
+      <label class="block text-sm mb-1">Role</label>
+      <select name="role"
+              class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="faculty">Faculty</option>
+        <option value="admin">Admin</option>
+      </select>
+    </div>
+    <button class="bg-blue-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-blue-700">
+      Create User
+    </button>
+  </form>
+</div>
+{% endblock %}

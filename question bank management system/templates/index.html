@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="min-h-[80vh] flex items-center justify-center bg-cover bg-center rounded-xl shadow p-6"
+     style="background-image: url('{{ url_for('static', filename='university_bg.jpg') }}');">
+
+  <div class="bg-white/85 backdrop-blur-md rounded-xl p-6 w-full max-w-4xl shadow-lg space-y-6 animate-fade">
+
+    <h2 class="text-xl font-semibold text-slate-800">
+      Question Bank Management System
+    </h2>
+
+    <p class="text-sm text-slate-600">
+      Maintain unit-wise question bank with CO–PO mapping, difficulty tags,
+      search filters & automatic question paper generation.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <div class="bg-blue-50 border border-blue-100 rounded-lg p-5 text-center shadow">
+        <p class="text-4xl font-bold text-blue-700">{{ subjects_count }}</p>
+        <p class="text-xs uppercase tracking-wider text-blue-700">Subjects</p>
+      </div>
+
+      <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-5 text-center shadow">
+        <p class="text-4xl font-bold text-emerald-700">{{ questions_count }}</p>
+        <p class="text-xs uppercase tracking-wider text-emerald-700">Questions</p>
+      </div>
+
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-3 w-full justify-center">
+      <a href="{{ url_for('subjects') }}"
+         class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 text-sm text-center">
+        Manage Subjects / Units
+      </a>
+      <a href="{{ url_for('search') }}"
+         class="bg-slate-800 text-white px-5 py-2 rounded hover:bg-black text-sm text-center">
+        Search Questions
+      </a>
+      <a href="{{ url_for('generate_paper') }}"
+         class="bg-emerald-600 text-white px-5 py-2 rounded hover:bg-emerald-700 text-sm text-center">
+        Generate Paper (PDF)
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.animate-fade {
+  animation: fadeIn .7s ease-out;
+}
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+{% endblock %}

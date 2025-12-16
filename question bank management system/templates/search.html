@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-xl font-semibold text-slate-800 mb-4">Search Questions</h2>
+
+<div class="bg-white rounded shadow p-4 mb-4">
+  <form method="post" class="grid md:grid-cols-4 gap-4 items-end">
+    <div>
+      <label class="block text-xs mb-1">Subject</label>
+      <select name="subject_id"
+              class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+        <option value="all">All Subjects</option>
+        {% for s in subjects %}
+        <option value="{{ s.id }}"
+          {% if selected_subject and selected_subject.id == s.id %}selected{% endif %}>
+          {{ s.code }} - {{ s.name }}
+        </option>
+        {% endfor %}
+        <a href="{{ url_for('export_excel') }}"
+   class="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700">
+   Export Excel
+</a>
+
+      </select>
+    </div>
+    <div>
+      <label class="block text-xs mb-1">Module / Unit No.</label>
+      <input type="number" name="module_no" value="{{ selected_module or '' }}"
+             class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" placeholder="e.g. 1">
+    </div>
+    <div>
+      <label class="block text-xs mb-1">Difficulty</label>
+      <select name="difficulty"
+              class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm">
+        <option value="all">All</option>
+        <option value="Easy" {% if selected_difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+        <option value="Medium" {% if selected_difficulty == 'Medium' %}selected{% endif %}>Medium</option>
+        <option value="Hard" {% if selected_difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+      </select>
+    </div>
+    <div>
+      <button class="w-full bg-blue-600 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-blue-700">
+        Search
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="bg-white rounded shadow p-4">
+  <h3 class="text-sm font-semibold mb-3 text-slate-700">Results</h3>
+  {% if results %}
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-xs md:text-sm">
+      <thead>
+        <tr class="bg-slate-100 text-slate-700">
+          <th class="px-3 py-2 text-left">Sub</th>
+          <th class="px-3 py-2 text-left">Module</th>
+          <th class="px-3 py-2 text-left">Topic</th>
+          <th class="px-3 py-2 text-left">Question</th>
+          <th class="px-3 py-2 text-left">Diff</th>
+          <th class="px-3 py-2 text-left">Cog</th>
+          <th class="px-3 py-2 text-left">CO</th>
+          <th class="px-3 py-2 text-left">PO</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in results %}
+        <tr class="border-b last:border-0">
+          <td class="px-3 py-2">{{ r.subject_code }}</td>
+          <td class="px-3 py-2">{{ r.module_no }}</td>
+          <td class="px-3 py-2">{{ r.topic_name }}</td>
+          <td class="px-3 py-2">{{ r.question_text }}</td>
+          <td class="px-3 py-2">{{ r.difficulty }}</td>
+          <td class="px-3 py-2">{{ r.cognitive_level }}</td>
+          <td class="px-3 py-2">{{ r.co }}</td>
+          <td class="px-3 py-2">{{ r.po }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="text-sm text-slate-500">No results. Try different filters.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="flex items-center justify-between mb-6">
+  <h2 class="text-xl font-semibold text-slate-800">Admin Analytics Dashboard</h2>
+  <p class="text-sm text-slate-600">
+    Total Questions:
+    <span class="font-bold">{{ difficulty.values() | sum }}</span>
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="grid md:grid-cols-2 gap-6">
+
+  <div class="bg-white rounded-xl shadow p-5 transition hover:shadow-lg">
+    <h3 class="text-sm font-semibold text-slate-700 mb-3">Questions by Difficulty</h3>
+    <canvas id="difficultyChart" height="160"></canvas>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-5 transition hover:shadow-lg">
+    <h3 class="text-sm font-semibold text-slate-700 mb-3">Questions by Module</h3>
+    <canvas id="moduleChart" height="160"></canvas>
+  </div>
+
+</div>
+
+<style>
+  .chart-appear { opacity: 0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease; }
+  .chart-appear.show { opacity: 1; transform: translateY(0); }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const difficultyLabels = {{ difficulty.keys() | list | tojson }};
+    const difficultyValues = {{ difficulty.values() | list | tojson }};
+    const moduleLabels = {{ module_labels | tojson }};
+    const moduleValues = {{ module_values | tojson }};
+
+    const diffEl = document.getElementById("difficultyChart");
+    const modEl = document.getElementById("moduleChart");
+
+    if (diffEl) {
+      new Chart(diffEl.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels: difficultyLabels,
+          datasets: [{
+            data: difficultyValues,
+            borderWidth: 2,
+            backgroundColor: "rgba(59,130,246,.4)",
+            borderColor: "rgb(37,99,235)"
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }}}
+      });
+      diffEl.classList.add("chart-appear", "show");
+    }
+
+    if (modEl) {
+      new Chart(modEl.getContext("2d"), {
+        type: "line",
+        data: {
+          labels: moduleLabels,
+          datasets: [{
+            data: moduleValues,
+            borderWidth: 3,
+            tension: 0.35,
+            borderColor: "rgb(16,185,129)",
+            backgroundColor: "rgba(16,185,129,.25)"
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }}}
+      });
+      modEl.classList.add("chart-appear", "show");
+    }
+  });
+</script>
+
+{% endblock %}

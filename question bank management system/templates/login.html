@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="min-h-[84vh] bg-cover bg-center flex items-center justify-center rounded-xl shadow-md p-4 relative"
+     style="background-image: url('{{ url_for('static', filename='university_bg.jpg') }}');">
+
+  <div class="absolute inset-0 bg-black/30 rounded-xl"></div>
+
+  <div class="relative bg-white/85 backdrop-blur-md rounded-xl p-7 w-full max-w-md shadow-xl animate-fade">
+
+    <div class="flex justify-center mb-4">
+      <img src="{{ url_for('static', filename='university_logo.png') }}" alt="Logo"
+           class="w-20 h-20 object-contain">
+    </div>
+
+    <h2 class="text-2xl font-semibold text-center text-slate-800 mb-1">
+      Question Bank Portal
+    </h2>
+    <p class="text-xs text-center text-slate-500 mb-5">
+      Admin Login → <b>admin / admin123</b>
+    </p>
+
+    <form method="post" class="space-y-4">
+      <div>
+        <label class="text-sm font-medium block mb-1">Username</label>
+        <input type="text" name="username" required
+               class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+      </div>
+
+      <div>
+        <label class="text-sm font-medium block mb-1">Password</label>
+        <input type="password" name="password" required
+               class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+      </div>
+
+      <button type="submit"
+              class="w-full bg-blue-600 text-white py-2 rounded text-sm font-semibold hover:bg-blue-700 transition">
+        Login
+      </button>
+    </form>
+  </div>
+</div>
+
+<style>
+@keyframes fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade { animation: fade .6s ease-out; }
+</style>
+
+{% endblock %}
